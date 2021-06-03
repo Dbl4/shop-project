@@ -22,6 +22,6 @@ def products(request):
         'h1': 'GeekShop',
         'footer_title': 'GeekShop'
     }
-    file_path = os.path.join(MODULE_DIR, 'fixtures/cards.json')
+    file_path = os.path.join(MODULE_DIR, 'fixtures/goods.json')
     context['products'] = json.load(open(file_path, encoding = 'utf-8'))
     return render(request, 'products/products.html', context)
