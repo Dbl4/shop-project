@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from products.models import Product, ProductCategory
+from static.products.models import Product, ProductCategory
 
 
 def index(request):
