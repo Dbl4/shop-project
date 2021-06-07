@@ -4,3 +4,5 @@ db.sqlite3
 README.md
 .replit
 media
+poetry.lock
+pyproject.toml
