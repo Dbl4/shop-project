@@ -56,3 +56,10 @@ class UserRegisterForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'email', 'first_name', 'last_name', 'password1', 'password2')
+
+    # валидатор
+    def clean_username(self):
+        data = self.cleaned_data['username']
+        if len(data) < 2:
+            raise forms.ValidationError("Имя пользователя должно содержать больше 1 символа!")
+        return data
