@@ -60,3 +60,18 @@ def admin_users_delete(request, id):
     user.save()
     return HttpResponseRedirect(reverse('admins:admin_users'))
     # return render(request, 'users/profile.html')
+
+
+def admin_categories(request):
+    # context = {
+    #   'categories': User.objects.all(),
+    #   'title': 'GeekShop - Админ | Категории',
+    # }
+    return render(request, 'admins/admin-categories-read.html')
+
+def admin_categories_create(request):
+    # context = {
+    #   'categories': User.objects.all(),
+    #   'title': 'GeekShop - Админ | Категории',
+    # }
+    return render(request, 'admins/admin-categories-create.html')
