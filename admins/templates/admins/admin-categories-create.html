@@ -1,0 +1,33 @@
+{% extends 'admins/base.html' %}
+{% load static %}
+
+{% block content %}
+    <main>
+        <div class="container-fluid">
+            <h1 class="mt-4">Создание категории</h1>
+            <form action="">
+                <div class="form-row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label class="small mb-1" for="inputCategoriesName">Название</label>
+                            <input class="form-control py-4" id="inputFirstName" type="text" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label class="small mb-1" for="inputDescription">Описание</label>
+                            <textarea class="form-control py-4" id="inputDescription" rows="4"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-lg-12" style="margin-top: 33px;">
+                        <input class="btn btn-info btn-block" type="submit" value="Сохранить">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+{% endblock %}
