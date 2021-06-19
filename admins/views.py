@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import user_passes_test
 
 from users.models import User
 from admins.forms import UserAdminRegisterForm, UserAdminProfileForm
+from products.models import ProductCategory
 
 @user_passes_test(lambda u: u.is_superuser)
 def index(request):
@@ -63,11 +64,11 @@ def admin_users_delete(request, id):
 
 
 def admin_categories(request):
-    # context = {
-    #   'categories': User.objects.all(),
-    #   'title': 'GeekShop - Админ | Категории',
-    # }
-    return render(request, 'admins/admin-categories-read.html')
+    context = {
+      'categories': ProductCategory.objects.all(),
+      'title': 'GeekShop - Админ | Категории',
+    }
+    return render(request, 'admins/admin-categories-read.html', context)
 
 def admin_categories_create(request):
     # context = {
