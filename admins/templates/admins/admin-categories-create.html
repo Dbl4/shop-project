@@ -5,20 +5,21 @@
     <main>
         <div class="container-fluid">
             <h1 class="mt-4">Создание категории</h1>
-            <form action="">
+            <form action="{% url 'admins:admin_categories_create' %}" method="post">
+                {% csrf_token %}
                 <div class="form-row">
                     <div class="col-lg-12">
                         <div class="form-group">
-                            <label class="small mb-1" for="inputCategoriesName">Название</label>
-                            <input class="form-control py-4" id="inputFirstName" type="text" />
+                            <label class="small mb-1" for="{{ form.name.id_for_label }}">Название</label>
+                            {{ form.name }}
                         </div>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col-lg-12">
                         <div class="form-group">
-                            <label class="small mb-1" for="inputDescription">Описание</label>
-                            <textarea class="form-control py-4" id="inputDescription" rows="4"></textarea>
+                            <label class="small mb-1" for="{{ form.description.id_for_label }}">Описание</label>
+                            {{ form.description }}
                         </div>
                     </div>
                 </div>

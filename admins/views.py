@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import user_passes_test
 
 from users.models import User
-from admins.forms import UserAdminRegisterForm, UserAdminProfileForm
+from admins.forms import UserAdminRegisterForm, UserAdminProfileForm,ProductCategoryAdminCreateForm
 from products.models import ProductCategory
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -60,9 +60,9 @@ def admin_users_delete(request, id):
     user.is_active = False
     user.save()
     return HttpResponseRedirect(reverse('admins:admin_users'))
-    # return render(request, 'users/profile.html')
 
 
+@user_passes_test(lambda u: u.is_superuser)
 def admin_categories(request):
     context = {
       'categories': ProductCategory.objects.all(),
@@ -70,9 +70,18 @@ def admin_categories(request):
     }
     return render(request, 'admins/admin-categories-read.html', context)
 
+
+@user_passes_test(lambda u: u.is_superuser)
 def admin_categories_create(request):
-    # context = {
-    #   'categories': User.objects.all(),
-    #   'title': 'GeekShop - Админ | Категории',
-    # }
-    return render(request, 'admins/admin-categories-create.html')
+    if request.method == 'POST':
+        form = ProductCategoryAdminCreateForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('admins:admin_categories'))
+    else:
+        form = ProductCategoryAdminCreateForm()
+    context = {
+      'title': 'GeekShop - Админ | Создание категории',
+      'form': form,
+    }
+    return render(request, 'admins/admin-categories-create.html', context)
