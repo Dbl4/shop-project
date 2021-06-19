@@ -85,3 +85,28 @@ def admin_categories_create(request):
       'form': form,
     }
     return render(request, 'admins/admin-categories-create.html', context)
+
+
+def admin_categories_update(request, id):
+    selected_category = ProductCategory.objects.get(id=id)
+    # if request.method == "POST":
+    #     form = UserAdminProfileForm(data=request.POST, files=request.FILES, instance=selected_user)
+    #     if form.is_valid():
+    #         form.save()
+    #         return HttpResponseRedirect(reverse('admins:admin_users'))
+    # else:
+    #     form = UserAdminProfileForm(instance=selected_user)
+    context = {
+      'title': 'GeekShop - Админ | Обновление пользователя',
+      # 'form': form,
+      'selected_category': selected_category,
+    }
+    return render(request, 'admins/admin-categories-update-delete.html', context)
+
+
+def admin_categories_delete(request, id):
+    pass
+    # user = User.objects.get(id=id)
+    # user.is_active = False
+    # user.save()
+    # return HttpResponseRedirect(reverse('admins:admin_users'))
