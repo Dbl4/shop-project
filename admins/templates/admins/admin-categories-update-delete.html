@@ -4,20 +4,22 @@
     <main>
         <div class="container-fluid">
             <h1 class="mt-4">Редактирование категории | {{ selected_category.name }}</h1>
-            <form action="">
+            <form action="{% url 'admins:admin_categories_update' selected_category.id %}" method="post"
+                      enctype="multipart/form-data">
+                {% csrf_token %}
                 <div class="form-row">
                     <div class="col-lg-12">
                         <div class="form-group">
-                            <label class="small mb-1" for="inputCategoriesName">Название</label>
-                            <input class="form-control py-4" id="inputFirstName" type="text" />
+                            <label class="small mb-1" for="{{ form.name.id_for_label }}">Название</label>
+                            {{ form.name }}
                         </div>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="col-lg-12">
                         <div class="form-group">
-                            <label class="small mb-1" for="inputDescription">Описание</label>
-                            <textarea class="form-control py-4" id="inputDescription" rows="4"></textarea>
+                            <label class="small mb-1" for="{{ form.description.id_for_label }}">Описание</label>
+                            {{ form.description }}
                         </div>
                     </div>
                 </div>
@@ -29,7 +31,7 @@
             </form>
             <div class="row">
                 <div class="col-lg-12" style="margin-top: 33px;">
-                    <input class="btn btn-danger btn-block" type="submit" value="Удалить">
+                        <a href="{% url 'admins:admin_categories_delete' selected_category.id %}" class="btn btn-danger btn-block">Удалить</a>
                 </div>
             </div>
         </div>

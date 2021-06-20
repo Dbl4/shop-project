@@ -20,7 +20,7 @@ class UserAdminProfileForm(UserProfileForm):
         attrs={'class': 'form-control py-4', 'readonly': False}))
 
 
-class ProductCategoryAdminCreateForm(ModelForm):
+class ProductCategoryAdminForm(ModelForm):
     name = forms.CharField(widget=forms.TextInput(
         attrs={
             'class': 'form-control py-4'
