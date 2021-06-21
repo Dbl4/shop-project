@@ -87,6 +87,7 @@ def admin_categories_create(request):
     return render(request, 'admins/admin-categories-create.html', context)
 
 
+@user_passes_test(lambda u: u.is_superuser)
 def admin_categories_update(request, id):
     selected_category = ProductCategory.objects.get(id=id)
     if request.method == "POST":
@@ -104,6 +105,7 @@ def admin_categories_update(request, id):
     return render(request, 'admins/admin-categories-update-delete.html', context)
 
 
+@user_passes_test(lambda u: u.is_superuser)
 def admin_categories_delete(request, id):
     category = ProductCategory.objects.get(id=id)
     category.delete()
