@@ -89,6 +89,12 @@ class UserDeleteView(DeleteView):
     form_class = UserAdminProfileForm
     success_url = reverse_lazy('admins:admin_users')
 
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.is_active = False
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
+
 
 @user_passes_test(lambda u: u.is_superuser)
 def admin_categories(request):
