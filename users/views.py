@@ -1,7 +1,4 @@
-from django.shortcuts import render, HttpResponseRedirect
-from django.contrib import auth, messages
 from django.urls import reverse, reverse_lazy
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.messages.views import SuccessMessageMixin
@@ -16,7 +13,7 @@ class UserLoginView(LoginView):
     template_name = 'users/login.html'
     authentication_form = UserLoginForm
 
-    def get_context_data(self, object_list=None, **kwargs):
+    def get_context_data(self, **kwargs):
         context = super(UserLoginView, self).get_context_data(**kwargs)
         context['title'] = 'GeekShop - Авторизация'
         return context
@@ -35,22 +32,37 @@ class UserRegisterView(SuccessMessageMixin, CreateView):
         return context
 
 
-@login_required
-def profile(request):
-    if request.method == "POST":
-        form = UserProfileForm(data=request.POST, files=request.FILES, instance=request.user)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Изменения сохранены!')
-            return HttpResponseRedirect(reverse('users:profile'))
-    else:
-        form = UserProfileForm(instance=request.user)
-    context = {
-      'title': 'GeekShop - Профиль',
-      'form': form,
-      'baskets': Basket.objects.filter(user=request.user),
-    }
-    return render(request, 'users/profile.html', context)
+# @login_required
+# def profile(request):
+#     if request.method == "POST":
+#         form = UserProfileForm(data=request.POST, files=request.FILES, instance=request.user)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, 'Изменения сохранены!')
+#             return HttpResponseRedirect(reverse('users:profile'))
+#     else:
+#         form = UserProfileForm(instance=request.user)
+#     context = {
+#       'title': 'GeekShop - Профиль',
+#       'form': form,
+#       'baskets': Basket.objects.filter(user=request.user),
+#     }
+#     return render(request, 'users/profile.html', context)
+
+class UserProfileUpdateView(SuccessMessageMixin, UpdateView):
+    model = User
+    template_name = 'users/profile.html'
+    form_class = UserProfileForm
+    success_message = 'Изменения сохранены!'
+
+    def get_success_url(self):
+        return reverse_lazy('users:profile', args =('self.object.id',))
+
+    def get_context_data(self, **kwargs):
+        context = super(UserProfileUpdateView, self).get_context_data(**kwargs)
+        context['title'] = 'GeekShop - Профиль'
+        context['baskets'] = Basket.objects.filter(user=self.object)
+        return context
 
 
 class UserLogoutView(LogoutView):

@@ -90,26 +90,6 @@ class CategoryCreateView(CreateView):
         return super(CategoryCreateView, self).dispatch(request, *args, **kwargs)
 
 
-# @user_passes_test(lambda u: u.is_superuser)
-# def admin_categories_update(request, id):
-#     selected_category = ProductCategory.objects.get(id=id)
-#     if request.method == "POST":
-#         form = ProductCategoryAdminForm(data=request.POST, instance=selected_category)
-#         if form.is_valid():
-#             form.save()
-#             return HttpResponseRedirect(reverse('admins:admin_categories'))
-#     else:
-#         form = ProductCategoryAdminForm(instance=selected_category)
-#     context = {
-#       'title': 'GeekShop - Админ | Обновление пользователя',
-#       'form': form,
-#       'selected_category': selected_category,
-#     }
-#     return render(request, 'admins/admin-categories-update-delete.html', context)
-
-
-
-## Здесь CategoryUpdateView и CategoryDeleteView почему то не работают, не понял почему(
 class CategoryUpdateView(UpdateView):
     model = ProductCategory
     template_name = 'admins/admin-categories-update-delete.html'
@@ -125,12 +105,6 @@ class CategoryUpdateView(UpdateView):
     def dispatch(self, request, *args, **kwargs):
         return super(CategoryUpdateView, self).dispatch(request, *args, **kwargs)
 
-
-# @user_passes_test(lambda u: u.is_superuser)
-# def admin_categories_delete(request, id):
-#     category = ProductCategory.objects.get(id=id)
-#     category.delete()
-#     return HttpResponseRedirect(reverse('admins:admin_categories'))
 
 class CategoryDeleteView(DeleteView):
     model = ProductCategory
