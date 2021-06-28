@@ -3,7 +3,8 @@ from django.urls import reverse
 from django.contrib.auth.decorators import user_passes_test
 
 from users.models import User
-from admins.forms import UserAdminRegisterForm, UserAdminProfileForm
+from admins.forms import UserAdminRegisterForm, UserAdminProfileForm,ProductCategoryAdminForm
+from products.models import ProductCategory
 
 @user_passes_test(lambda u: u.is_superuser)
 def index(request):
@@ -59,19 +60,53 @@ def admin_users_delete(request, id):
     user.is_active = False
     user.save()
     return HttpResponseRedirect(reverse('admins:admin_users'))
-    # return render(request, 'users/profile.html')
 
 
+@user_passes_test(lambda u: u.is_superuser)
 def admin_categories(request):
-    # context = {
-    #   'categories': User.objects.all(),
-    #   'title': 'GeekShop - Админ | Категории',
-    # }
-    return render(request, 'admins/admin-categories-read.html')
+    context = {
+      'categories': ProductCategory.objects.all(),
+      'title': 'GeekShop - Админ | Категории',
+    }
+    return render(request, 'admins/admin-categories-read.html', context)
 
+
+@user_passes_test(lambda u: u.is_superuser)
 def admin_categories_create(request):
-    # context = {
-    #   'categories': User.objects.all(),
-    #   'title': 'GeekShop - Админ | Категории',
-    # }
-    return render(request, 'admins/admin-categories-create.html')
+    if request.method == 'POST':
+        form = ProductCategoryAdminForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('admins:admin_categories'))
+    else:
+        form = ProductCategoryAdminForm()
+    context = {
+      'title': 'GeekShop - Админ | Создание категории',
+      'form': form,
+    }
+    return render(request, 'admins/admin-categories-create.html', context)
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def admin_categories_update(request, id):
+    selected_category = ProductCategory.objects.get(id=id)
+    if request.method == "POST":
+        form = ProductCategoryAdminForm(data=request.POST, instance=selected_category)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('admins:admin_categories'))
+    else:
+        form = ProductCategoryAdminForm(instance=selected_category)
+    context = {
+      'title': 'GeekShop - Админ | Обновление пользователя',
+      'form': form,
+      'selected_category': selected_category,
+    }
+    return render(request, 'admins/admin-categories-update-delete.html', context)
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def admin_categories_delete(request, id):
+    category = ProductCategory.objects.get(id=id)
+    category.delete()
+    return HttpResponseRedirect(reverse('admins:admin_categories'))
