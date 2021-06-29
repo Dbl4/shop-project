@@ -1,4 +1,4 @@
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.messages.views import SuccessMessageMixin
@@ -32,23 +32,6 @@ class UserRegisterView(SuccessMessageMixin, CreateView):
         return context
 
 
-# @login_required
-# def profile(request):
-#     if request.method == "POST":
-#         form = UserProfileForm(data=request.POST, files=request.FILES, instance=request.user)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, 'Изменения сохранены!')
-#             return HttpResponseRedirect(reverse('users:profile'))
-#     else:
-#         form = UserProfileForm(instance=request.user)
-#     context = {
-#       'title': 'GeekShop - Профиль',
-#       'form': form,
-#       'baskets': Basket.objects.filter(user=request.user),
-#     }
-#     return render(request, 'users/profile.html', context)
-
 class UserProfileUpdateView(SuccessMessageMixin, UpdateView):
     model = User
     template_name = 'users/profile.html'
@@ -56,7 +39,7 @@ class UserProfileUpdateView(SuccessMessageMixin, UpdateView):
     success_message = 'Изменения сохранены!'
 
     def get_success_url(self):
-        return reverse_lazy('users:profile', args =('self.object.id',))
+        return reverse_lazy('users:profile', args =(self.object.id,))
 
     def get_context_data(self, **kwargs):
         context = super(UserProfileUpdateView, self).get_context_data(**kwargs)

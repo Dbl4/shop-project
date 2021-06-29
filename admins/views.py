@@ -39,12 +39,20 @@ class UserCreateView(CreateView):
     form_class = UserAdminRegisterForm
     success_url = reverse_lazy('admins:admin_users')
 
+    @method_decorator(user_passes_test(lambda u: u.is_superuser))
+    def dispatch(self, request, *args, **kwargs):
+        return super(UserCreateView, self).dispatch(request, *args, **kwargs)
+
 
 class UserUpdateView(UpdateView):
     model = User
     template_name = 'admins/admin-users-update-delete.html'
     form_class = UserAdminProfileForm
     success_url = reverse_lazy('admins:admin_users')
+
+    @method_decorator(user_passes_test(lambda u: u.is_superuser))
+    def dispatch(self, request, *args, **kwargs):
+        return super(UserUpdateView, self).dispatch(request, *args, **kwargs)
 
 
 class UserDeleteView(DeleteView):
@@ -58,6 +66,10 @@ class UserDeleteView(DeleteView):
         self.object.is_active = False
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
+
+    @method_decorator(user_passes_test(lambda u: u.is_superuser))
+    def dispatch(self, request, *args, **kwargs):
+        return super(UserDeleteView, self).dispatch(request, *args, **kwargs)
 
 
 class CategoryListView(ListView):
@@ -111,3 +123,7 @@ class CategoryDeleteView(DeleteView):
     template_name = 'admins/admin-categories-update-delete.html'
     form_class = ProductCategoryAdminForm
     success_url = reverse_lazy('admins:admin_categories')
+
+    @method_decorator(user_passes_test(lambda u: u.is_superuser))
+    def dispatch(self, request, *args, **kwargs):
+        return super(CategoryDeleteView, self).dispatch(request, *args, **kwargs)
