@@ -1,5 +1,6 @@
+from django.shortcuts import render
 from django.shortcuts import HttpResponseRedirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.contrib.auth.decorators import user_passes_test
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -7,8 +8,8 @@ from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateView
 
 from users.models import User
-from admins.forms import UserAdminRegisterForm, UserAdminProfileForm,ProductCategoryAdminForm
-from products.models import ProductCategory
+from admins.forms import UserAdminRegisterForm, UserAdminProfileForm,ProductCategoryAdminForm, ProductAdminForm
+from products.models import ProductCategory, Product
 
 
 class UserTemplateView(TemplateView):
@@ -127,3 +128,27 @@ class CategoryDeleteView(DeleteView):
     @method_decorator(user_passes_test(lambda u: u.is_superuser))
     def dispatch(self, request, *args, **kwargs):
         return super(CategoryDeleteView, self).dispatch(request, *args, **kwargs)
+
+
+def admin_products(request):
+    context = {
+        'products': Product.objects.all(),
+        'title': 'GeekShop - Админ | Продукты',
+    }
+    return render(request, 'admins/admin-products-read.html', context)
+
+
+def admin_products_create(request):
+    if request.method == 'POST':
+        form = ProductAdminForm(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('admins:admin_products'))
+        else:
+            form = ProductAdminForm()
+        context = {
+            'title': 'GeekShop - Админ | Создание продукта',
+            'form': form,
+        }
+        return render(request, 'admins/admin-products-create.html', context)
+

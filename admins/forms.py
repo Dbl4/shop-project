@@ -3,7 +3,7 @@ from django.forms import ModelForm
 
 from users.models import User
 from users.forms import UserRegisterForm, UserProfileForm
-from products.models import ProductCategory
+from products.models import ProductCategory, Product
 
 class UserAdminRegisterForm(UserRegisterForm):
     image = forms.ImageField(widget=forms.FileInput(attrs={'class': 'custom-file-input'}), required=False)
@@ -22,14 +22,27 @@ class UserAdminProfileForm(UserProfileForm):
 
 class ProductCategoryAdminForm(ModelForm):
     name = forms.CharField(widget=forms.TextInput(
-        attrs={
-            'class': 'form-control py-4'
-        }))
+        attrs={'class': 'form-control py-4'}))
     description = forms.CharField(widget=forms.Textarea(
-        attrs={
-            'class': 'form-control py-4'
-        }))
+        attrs={'class': 'form-control py-4'}))
 
     class Meta:
         model = ProductCategory
         fields = ['name', 'description']
+
+
+class ProductAdminForm(ModelForm):
+    name = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control py-4'}))
+    price = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control py-4'}))
+    quantity = forms.CharField(widget=forms.TextInput(
+        attrs={'class': 'form-control py-4'}))
+    category = forms.CharField(widget=forms.SelectMultiple(
+        attrs={'class': 'form-control py-4'}))
+    image = forms.ImageField(widget=forms.FileInput(
+        attrs={'class': 'form-control py-4'}), required=False)
+
+    class Meta:
+        model = Product
+        fields = ['name', 'image', 'price', 'quantity', 'category']
