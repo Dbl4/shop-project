@@ -144,11 +144,12 @@ def admin_products_create(request):
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('admins:admin_products'))
-        else:
-            form = ProductAdminForm()
-        context = {
-            'title': 'GeekShop - Админ | Создание продукта',
-            'form': form,
-        }
-        return render(request, 'admins/admin-products-create.html', context)
+    else:
+        form = ProductAdminForm()
+    context = {
+        'title': 'GeekShop - Админ | Создание продукта',
+        'form': form,
+        'categories': ProductCategory.objects.all()
+    }
+    return render(request, 'admins/admin-products-create.html', context)
 

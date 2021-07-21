@@ -41,7 +41,7 @@ class ProductAdminForm(ModelForm):
     category = forms.CharField(widget=forms.SelectMultiple(
         attrs={'class': 'form-control py-4'}))
     image = forms.ImageField(widget=forms.FileInput(
-        attrs={'class': 'form-control py-4'}), required=False)
+        attrs={'class': 'custom-file-input'}), required=False)
 
     class Meta:
         model = Product

@@ -5,43 +5,41 @@
     <main>
     <div class="container-fluid">
         <h1 class="mt-4">Создание продукта</h1>
-        <form action="">
+        <form action="{% url 'admins:admin_products_create' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
             <div class="form-row">
                 <div class="col-lg-12">
                     <div class="form-group">
-                        <label class="small mb-1" for="inputFirstName">Название</label>
-                        <input class="form-control py-4" id="inputFirstName" type="text" />
+                        <label class="small mb-1" for="{{ form.name.id_for_label }}">Название</label>
+                        {{ form.name }}
                     </div>
                 </div>
             </div>
             <div class="form-row mb-2">
                 <div class="col-lg-12">
                     <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="userAvatar" size="50">
-                        <label class="custom-file-label" for="userAvatar">Выберите изображение</label>
+                        <label class="custom-file-label" for="{{ form.product_image.id_for_label }}">Выберите изображение</label>
+                        {{ form.image }}
                     </div>
                 </div>
             </div>
             <div class="form-row mb-3">
                 <div class="col-lg-6">
-                    <label class="small mb-1" for="inputUsername">Цена (руб.)</label>
-                    <input class="form-control py-4" id="inputUsername" type="text"
-                        aria-describedby="usernameHelp" />
+                    <label class="small mb-1" for="{{ form.price.id_for_label }}">Цена (руб.)</label>
+                    {{ form.price }}
                 </div>
                 <div class="col-lg-6">
-                    <label class="small mb-1" for="inputEmailAddress">Количество (шт.)</label>
-                    <input class="form-control py-4" id="inputEmailAddress" type="email"
-                        aria-describedby="emailHelp" />
+                    <label class="small mb-1" for="{{ form.quantity.id_for_label }}">Количество (шт.)</label>
+                    {{ form.quantity }}
                 </div>
             </div>
             <div class="form-row">
                 <div class="col-lg-12">
-                    <select class="form-control form-control-lg" id="Categoryname">
+                    <select class="form-control form-control-lg" id="categories">
                         <option value selected disabled>Выберите категорию</option>
-                        <option value="Одежда">Одежда</option>
-                        <option value="Новинки">Новинки</option>
-                        <option value="Обувь">Обувь</option>
-                        <option value="Подарки">Подарки</option>
+                        {% for category in categories %}
+                            <option value="{{ category.name }}">{{ category.name }}</option>
+                        {% endfor %}
                     </select>
                 </div>
             </div>
