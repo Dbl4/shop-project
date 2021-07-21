@@ -38,11 +38,13 @@ class ProductAdminForm(ModelForm):
         attrs={'class': 'form-control py-4'}))
     quantity = forms.CharField(widget=forms.TextInput(
         attrs={'class': 'form-control py-4'}))
-    category = forms.CharField(widget=forms.SelectMultiple(
-        attrs={'class': 'form-control py-4'}))
+    # category = forms.MultipleChoiceField(widget=forms.SelectMultiple(
+    #     attrs={'class': 'form-control form-control-lg'}))
     image = forms.ImageField(widget=forms.FileInput(
         attrs={'class': 'custom-file-input'}), required=False)
+    description = forms.CharField(widget=forms.Textarea(
+        attrs={'class': 'form-control py-3'}))
 
     class Meta:
         model = Product
-        fields = ['name', 'image', 'price', 'quantity', 'category']
+        fields = ['name', 'image', 'price', 'quantity', 'category', 'description']

@@ -149,7 +149,29 @@ def admin_products_create(request):
     context = {
         'title': 'GeekShop - Админ | Создание продукта',
         'form': form,
-        'categories': ProductCategory.objects.all()
     }
     return render(request, 'admins/admin-products-create.html', context)
+
+
+def admin_products_update(request, id):
+    selected_product = Product.objects.get(id=id)
+    if request.method == "POST":
+        form = ProductAdminForm(data=request.POST, files=request.FILES, instance=selected_product)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('admins:admin_products'))
+    else:
+        form = ProductAdminForm(instance=selected_product)
+    context = {
+      'title': 'GeekShop - Админ | Обновление продукта',
+      'form': form,
+      'selected_product': selected_product,
+    }
+    return render(request, 'admins/admin-products-update-delete.html', context)
+
+
+def admin_products_delete(request, id):
+    product = Product.objects.get(id=id)
+    product.delete()
+    return HttpResponseRedirect(reverse('admins:admin_products'))
 
