@@ -67,6 +67,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'baskets.context_processors.baskets',
             ],
         },
     },
@@ -141,3 +142,19 @@ LOGIN_URL = '/users/login/'
 
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'index'
+
+DOMAIN_NAME = 'http://127.0.0.1:8000'
+# EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = 'tmp/messages'
+# EMAIL_HOST = 'localhost'
+# EMAIL_PORT = '25'
+# EMAIL_HOST_USER = ''
+# EMAIL_HOST_PASSWORD = ''
+#
+# EMAIL_USE_SSL = False
+
+EMAIL_HOST = 'smtp.mailtrap.io'
+EMAIL_HOST_USER = '5e246089085535'
+EMAIL_HOST_PASSWORD = 'b368f431d63a9c'
+EMAIL_PORT = '465'
+EMAIL_USE_TLS = True
