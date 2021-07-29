@@ -7,3 +7,5 @@ media
 poetry.lock
 pyproject.toml
 tmp
+.env
+vk.json

@@ -7,9 +7,9 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.messages.views import SuccessMessageMixin
 
 
-from users.forms import UserLoginForm, UserRegisterForm, UserProfileForm
+from users.forms import UserLoginForm, UserRegisterForm, UserProfileForm, ShopUserProfileEditForm
 from baskets.models import Basket
-from users.models import User
+from users.models import User, ShopUserProfile
 
 from geekshop import settings
 
@@ -23,13 +23,14 @@ def send_verify_email(user):
 
     return send_mail(title, message, settings.EMAIL_HOST_USER, [user.email],fail_silently=False)
 
+
 def verify(request, email, activation_key):
     try:
         user = User.objects.get(email=email)
         if user.activation_key == activation_key and not user.is_activation_key_expired():
             user.is_active = True
             user.save()
-            #auth.login(request, user) в лекции передается такой параметр, что нужно прописать мне я не понял
+            #auth.login(request, user) в лекции передается такой параметр, но у меня естественно выдает ошибку что нужно прописать мне я не понял
             #UserLoginView(user) - не работает
             return render(request, 'users/verification.html')
         else:
@@ -86,6 +87,30 @@ class UserProfileUpdateView(SuccessMessageMixin, UpdateView):
         context['title'] = 'GeekShop - Профиль'
         context['baskets'] = Basket.objects.filter(user=self.object)
         return context
+
+# class UserProfileUpdateEditView(SuccessMessageMixin, UpdateView):
+#
+#     """
+#     не понял как прикрутить в моем случае эту форму. Получается у меня в в профиле будут 3 модели (User,
+#     Basket и UserProfileUpdateEditView), так как у меня проект немного отличается, я не знаю
+#     как это сделать в моем случае? Насколько я понимаю,
+#     через один класс (в моем случае изначально UserProfileUpdateView) нельзя использовать 2 формы
+#     одновременно.Создал отдельную модель ShopUserProfile и форма ShopUserProfileEditForm, все закинул в данный класс
+#     Если смотреть в админке все работает и создается, но на странице не отображается. Возможно что-то нужно прописать в
+#     profile_html для отображения. Помогите пожалуйста...
+#     """
+#
+#     model = ShopUserProfile
+#     template_name = 'users/profile.html'
+#     form_class = ShopUserProfileEditForm
+#     success_message = 'Изменения сохранены!'
+#
+#     def get_success_url(self):
+#         return reverse_lazy('users:profile', args =(self.object.id,))
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(UserProfileUpdateEditView, self).get_context_data(**kwargs)
+#         return context
 
 
 class UserLogoutView(LogoutView):
