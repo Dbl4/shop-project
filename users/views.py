@@ -97,7 +97,7 @@ class UserProfileUpdateView(SuccessMessageMixin, UpdateView):
 #     через один класс (в моем случае изначально UserProfileUpdateView) нельзя использовать 2 формы
 #     одновременно.Создал отдельную модель ShopUserProfile и форма ShopUserProfileEditForm, все закинул в данный класс
 #     Если смотреть в админке все работает и создается, но на странице не отображается. Возможно что-то нужно прописать в
-#     profile_html для отображения. Помогите пожалуйста...
+#     profile_html для отображения. Помогите пожалуйста..
 #     """
 #
 #     model = ShopUserProfile
