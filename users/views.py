@@ -1,3 +1,4 @@
+from django.forms import inlineformset_factory
 from django.shortcuts import HttpResponseRedirect, render
 from django.core.mail import send_mail
 from django.contrib import auth
@@ -85,6 +86,12 @@ class UserProfileUpdateView(SuccessMessageMixin, UpdateView):
         context = super(UserProfileUpdateView, self).get_context_data(**kwargs)
         context['title'] = 'GeekShop - Профиль'
         context['baskets'] = Basket.objects.filter(user=self.object)
+        # edit_form = UserProfileForm(instance=self.request.user)
+        # profile_form = ShopUserProfileEditForm(instance=self.request.user.shopuserprofile)
+        #
+        # context['edit_form'] = edit_form
+        # context['profile_form'] = profile_form
+
         return context
 
 # class UserProfileUpdateEditView(SuccessMessageMixin, UpdateView):
