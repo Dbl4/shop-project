@@ -1,7 +1,8 @@
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
 from django import forms
 
-from users.models import User
+from users.models import User, ShopUserProfile
+import random, hashlib
 
 
 class UserLoginForm(AuthenticationForm):
@@ -80,6 +81,15 @@ class UserRegisterForm(UserCreationForm):
                 "Фамилия должна содержать больше 1 символа!")
         return data
 
+    def save(self):
+        user = super(UserRegisterForm, self).save()
+
+        user.is_active = False
+        salt = hashlib.sha1(str(random.random()).encode('utf8')).hexdigest()[:6]
+        user.activation_key = hashlib.sha1(str(user.email + salt).encode('utf8')).hexdigest()
+        user.save()
+        return user
+
 
 class UserProfileForm(UserChangeForm):
     username = forms.CharField(widget=forms.TextInput(
@@ -111,3 +121,15 @@ class UserProfileForm(UserChangeForm):
             raise forms.ValidationError(
                 "Фамилия должна содержать больше 1 символа!")
         return data
+
+
+class ShopUserProfileEditForm(forms.ModelForm):
+
+    class Meta:
+        model = ShopUserProfile
+        fields = ('tag_line', 'about_me', 'gender')
+
+    def __init__(self, *args, **kwargs):
+        super(ShopUserProfileEditForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = ''
