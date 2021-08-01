@@ -1,6 +1,6 @@
 from django.shortcuts import HttpResponseRedirect, render
 from django.core.mail import send_mail
-from django.contrib import messages
+from django.contrib import auth
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic.edit import CreateView, UpdateView
@@ -30,8 +30,7 @@ def verify(request, email, activation_key):
         if user.activation_key == activation_key and not user.is_activation_key_expired():
             user.is_active = True
             user.save()
-            #auth.login(request, user) в лекции передается такой параметр, но у меня естественно выдает ошибку что нужно прописать мне я не понял
-            #UserLoginView(user) - не работает
+            auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return render(request, 'users/verification.html')
         else:
             print(f'error activation user {user.username}')

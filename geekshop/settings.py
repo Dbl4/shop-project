@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'users',
     'baskets',
     'admins',
+    'ordersapp',
 
     'social_django',
 ]
@@ -181,14 +182,10 @@ EMAIL_FILE_PATH = 'tmp/messages'
 # EMAIL_USE_SSL = False
 
 EMAIL_HOST = 'smtp.mailtrap.io'
-EMAIL_HOST_USER = '5e246089085535'
-EMAIL_HOST_PASSWORD = 'b368f431d63a9c'
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = '465'
 EMAIL_USE_TLS = True
-
-vk_id = '7912981'
-vk_key = 'Hs0RwUZkRyynOOVfMEia'
-vk_secret = 'd4eb8209d4eb8209d4eb8209fbd4933c1cdd4ebd4eb8209b5ebda29b694ce4a6fd27cad'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
