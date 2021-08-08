@@ -20,3 +20,8 @@ class Product(models.Model):
 
     def __str__(self):
         return f'{self.name} | {self.category.name}'
+
+    @staticmethod
+    def get_items():
+        #quantity__gt возращает значения больше чем 0
+        return Product.objects.filter(quantity__gt=0).order_by('category','name')
